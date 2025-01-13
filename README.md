@@ -1,4 +1,6 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+## Dev Container
+
+Make sure you have Docker desktop installed locally and dev container extension in vscode. Then open the project in Dev container.
 
 ## Getting Started
 
