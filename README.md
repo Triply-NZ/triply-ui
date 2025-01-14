@@ -1,7 +1,13 @@
 ## Dev Container
 
+### Develop locally
+
 - Make sure you have Docker desktop installed locally and dev container extension in vscode. Then open the project in Dev container.
 - Access to github by install [github-cli](https://docs.github.com/en/get-started/getting-started-with-git/caching-your-github-credentials-in-git#github-cli)
+
+### Develop in Codespace
+
+Just need to create branch and open in Codespace
 
 ## Getting Started
 
