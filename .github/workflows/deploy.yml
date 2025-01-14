@@ -36,7 +36,7 @@ jobs:
       - uses: azure/docker-login@v1
         with:
           login-server: ${{ vars.ACR_NAME }}
-          username: ${{ secrets.ACR_TOKEN_USERNAME }}
+          username: ${{ vars.ACR_TOKEN_USERNAME }}
           password: ${{ secrets.ACR_SECRET }}
 
       - name: Build image
