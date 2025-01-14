@@ -34,7 +34,7 @@ jobs:
         run: pnpm run build
   push-to-azure:
     name: Push to Azure Registry
-    need: build
+    needs: build
     runs-on: ubuntu-latest
     steps:
       - name: Login to Azure Container Registry
