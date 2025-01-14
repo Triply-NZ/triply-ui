@@ -39,7 +39,7 @@ jobs:
     steps:
       - name: Login to Azure Container Registry
         run: |
-          echo ${{ secrets.ACR_SECRET }} | docker login vars.ACR_NAME --username ${{ vars.ACR_TOKEN_USERNAME }} --password-stdin
+          echo ${{ secrets.ACR_SECRET }} | docker login ${{ vars.ACR_NAME }} --username ${{ vars.ACR_TOKEN_USERNAME }} --password-stdin
       - name: Build image
         run: docker build --platform linux/amd64 -t triply.azurecr.io/triply-ui .
       - name: Push image
