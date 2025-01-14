@@ -1,6 +1,7 @@
 ## Dev Container
 
-Make sure you have Docker desktop installed locally and dev container extension in vscode. Then open the project in Dev container.
+- Make sure you have Docker desktop installed locally and dev container extension in vscode. Then open the project in Dev container.
+- Access to github by install [github-cli](https://docs.github.com/en/get-started/getting-started-with-git/caching-your-github-credentials-in-git#github-cli)
 
 ## Getting Started
 
