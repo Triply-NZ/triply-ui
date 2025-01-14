@@ -32,11 +32,7 @@ jobs:
         run: pnpm i --frozen-lockfile
       - name: Build App
         run: pnpm run build
-  push-to-azure:
-    name: Push to Azure Registry
-    needs: build
-    runs-on: ubuntu-latest
-    steps:
+
       - name: Login to Azure Container Registry
         run: |
           echo ${{ secrets.ACR_SECRET }} | docker login ${{ vars.ACR_NAME }} --username ${{ vars.ACR_TOKEN_USERNAME }} --password-stdin
