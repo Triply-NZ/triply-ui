@@ -18,6 +18,9 @@
 				"dbaeumer.vscode-eslint"
 			]
 		}
+	},
+	"features": {
+		"ghcr.io/devcontainers/features/docker-outside-of-docker:1": {}
 	}
 	// Configure tool-specific properties.
 	// "customizations": {},
