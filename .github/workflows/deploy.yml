@@ -1,0 +1,46 @@
+name: ci
+
+on:
+  push:
+    branches:
+      - main
+    # Review gh actions docs if you want to further define triggers, paths, etc
+    # https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions#on
+
+jobs:
+  build:
+    name: Build Application
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: pnpm/action-setup@v4
+        name: Install pnpm
+        with:
+          version: 10
+          run_install: false
+
+      - name: Install Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'pnpm'
+
+      - name: Install dependencies
+        run: pnpm i --frozen-lockfile
+      - name: Build App
+        run: pnpm run build
+  push-to-azure:
+    name: Push to Azure Registry
+    need: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Login to Azure Container Registry
+        run: |
+          echo ${{ secrets.ACR_SECRET }} | docker login vars.ACR_NAME --username ${{ vars.ACR_TOKEN_USERNAME }} --password-stdin
+      - name: Build image
+        run: docker build --platform linux/amd64 -t triply.azurecr.io/triply-ui .
+      - name: Push image
+        run: docker push triply.azurecr.io/triply-ui
