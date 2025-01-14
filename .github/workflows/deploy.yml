@@ -33,10 +33,23 @@ jobs:
       - name: Build App
         run: pnpm run build
 
-      - name: Login to Azure Container Registry
-        run: |
-          echo ${{ secrets.ACR_SECRET }} | docker login ${{ vars.ACR_NAME }} --username ${{ vars.ACR_TOKEN_USERNAME }} --password-stdin
+      - uses: azure/docker-login@v1
+        with:
+          login-server: ${{ vars.ACR_NAME }}
+          username: ${{ secrets.ACR_TOKEN_USERNAME }}
+          password: ${{ secrets.ACR_SECRET }}
+
       - name: Build image
         run: docker build --platform linux/amd64 -t triply.azurecr.io/triply-ui .
       - name: Push image
         run: docker push triply.azurecr.io/triply-ui
+  deploy:
+    name: Deploy ACR image
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: azure/webapps-deploy@v2
+        with:
+          app-name: 'triply'
+          publish-profile: ${{ secrets.azureWebAppPublishProfile }}
+          images: 'triply.azurecr.io/triply-ui'
