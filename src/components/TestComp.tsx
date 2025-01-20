@@ -6,10 +6,13 @@ export default function TestComp() {
   const [city, setCity] = useState('');
   const [days, setDays] = useState('');
   const [advise, setAdvise] = useState('');
+  const [isPending, setIsPending] = useState(false);
   const onSubmit = async () => {
+    setIsPending(true);
     const resp = await fetch(`/api/advisor?city=${city}&days=${days}`);
     const results = await resp.json();
     setAdvise(JSON.stringify(results));
+    setIsPending(false);
   };
   return (
     <>
@@ -26,7 +29,9 @@ export default function TestComp() {
           className='border'
           placeholder='input days'
         />
-        <button onClick={onSubmit}>Submit</button>
+        <button disabled={isPending} onClick={onSubmit}>
+          Submit
+        </button>
       </div>
       <div className='px-36'>{advise}</div>
     </>
