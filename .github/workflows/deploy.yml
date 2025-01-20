@@ -40,9 +40,9 @@ jobs:
           password: ${{ secrets.ACR_SECRET }}
 
       - name: Build image
-        run: docker build --platform linux/amd64 --no-cache -t triply.azurecr.io/triply-ui:v1 .
+        run: docker build --platform linux/amd64 --no-cache -t triply.azurecr.io/triply-ui:${{ github.sha }} .
       - name: Push image
-        run: docker push triply.azurecr.io/triply-ui
+        run: docker push triply.azurecr.io/triply-ui:${{ github.sha }}
   deploy:
     name: Deploy ACR image
     needs: build
@@ -52,4 +52,4 @@ jobs:
         with:
           app-name: 'triply'
           publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE}}
-          images: 'triply.azurecr.io/triply-ui:v1'
+          images: 'triply.azurecr.io/triply-ui:${{ github.sha }}'
