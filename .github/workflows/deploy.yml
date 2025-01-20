@@ -28,8 +28,13 @@ jobs:
           node-version: 20
           cache: 'pnpm'
 
+      - name: Generate version.json
+        run: |
+          echo "{\"version\": \"${{ github.sha }}\"}" > version.json
+
       - name: Install dependencies
         run: pnpm i --frozen-lockfile
+
       - name: Build App
         run: rm -rf .next && pnpm run build
 
@@ -43,6 +48,7 @@ jobs:
         run: docker build --platform linux/amd64 -t triply.azurecr.io/triply-ui:${{ github.sha }} .
       - name: Push image
         run: docker push triply.azurecr.io/triply-ui:${{ github.sha }}
+
   deploy:
     name: Deploy ACR image
     needs: build
