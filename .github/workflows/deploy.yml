@@ -30,7 +30,7 @@ jobs:
 
       - name: Generate version.json
         run: |
-          echo "{\"version\": \"${{ github.sha }}\"}" > version.json
+          echo "{\"version\": \"${{ github.sha }}\"}" > public/version.json
 
       - name: Install dependencies
         run: pnpm i --frozen-lockfile
