@@ -16,6 +16,9 @@ jobs:
         with:
           fetch-depth: 0
 
+      - name: test checkout
+        run: cat src/app/page.tsx
+
       - uses: pnpm/action-setup@v4
         name: Install pnpm
         with:
