@@ -30,7 +30,7 @@ export default function TestComp() {
           placeholder='input days'
         />
         <button disabled={isPending} onClick={onSubmit}>
-          Submit
+          {isPending ? 'Pending...' : 'Submit'}
         </button>
       </div>
       <div className='px-36'>{advise}</div>
