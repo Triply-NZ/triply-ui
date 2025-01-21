@@ -1,9 +1,9 @@
-import TestComp from '@/components/TestComp';
+import React from "react"; 
+import TripForm from "@/components/TripForm";
 
-export default function Home() {
-  return (
-    <div className='m-4'>
-      <TestComp />
-    </div>
-  );
-}
+const Dashboard = () => {
+  return <TripForm />;
+  
+};
+
+export default Dashboard;
