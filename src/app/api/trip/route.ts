@@ -1,6 +1,7 @@
-import {NextRequest} from "next/server";
+import { tripSchema } from "@/ValidationSchemas/trip";
+import {NextRequest, NextResponse} from "next/server";
 
-export async function Post(request: NextRequest){
+export async function POST(request: NextRequest){
     const body = await request.json();
     const validation = tripSchema.safeParse(body);
 

@@ -45,7 +45,7 @@ const TripForm = () => {
             {/* Departure Time */}
             <FormField
               control={form.control}
-              name="departureTime"
+              name='departTime'
               render={({ field }) => (
                 <FormItem className="flex-1">
                   <FormLabel>Departure Time</FormLabel>
