@@ -4,11 +4,14 @@ on:
   push:
     branches:
       - main
+  pull_request:
+    branches:
+      - main
     # Review gh actions docs if you want to further define triggers, paths, etc
     # https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions#on
 
 jobs:
-  build:
+  build-project:
     name: Build Application
     runs-on: ubuntu-latest
     steps:
@@ -38,6 +41,25 @@ jobs:
       - name: Build App
         run: rm -rf .next && pnpm run build
 
+      - name: 'Upload Artifact'
+        if: github.ref == 'refs/heads/main'
+        uses: actions/upload-artifact@v4
+        with:
+          name: artifact
+          path: ./.next
+          retention-days: 1
+
+  build-image:
+    name: Build image
+    needs: build-project
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+    steps:
+      - name: Download a single artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: artifact
+
       - uses: azure/docker-login@v1
         with:
           login-server: ${{ vars.ACR_NAME }}
@@ -49,10 +71,11 @@ jobs:
       - name: Push image
         run: docker push triply.azurecr.io/triply-ui:${{ github.sha }}
 
-  deploy:
+  deploy-to-azure:
     name: Deploy ACR image
-    needs: build
+    needs: build-image
     runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
     steps:
       - uses: azure/webapps-deploy@v2
         with:
