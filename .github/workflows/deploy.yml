@@ -11,8 +11,8 @@ on:
     # https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions#on
 
 jobs:
-  build-project:
-    name: Build Application
+  build:
+    name: Build Application Image
     runs-on: ubuntu-latest
 
     steps:
@@ -41,7 +41,7 @@ jobs:
 
   deploy-to-azure:
     name: Deploy ACR image
-    needs: build-image
+    needs: build
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/main'
     steps:
