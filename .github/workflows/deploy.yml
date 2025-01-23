@@ -43,28 +43,28 @@ jobs:
         if: github.ref == 'refs/heads/main'
         run: docker push triply.azurecr.io/triply-ui:${{ github.sha }}
 
-  build-for-local-test:
-    name: Build Application Image for local test
-    runs-on: macos-latest
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
+  # build-for-local-test:
+  #   name: Build Application Image for local test
+  #   runs-on: macos-latest
+  #   steps:
+  #     - uses: actions/checkout@v4
+  #       with:
+  #         fetch-depth: 0
 
-      - name: Generate version.json
-        run: |
-          echo "{\"version\": \"${{ github.sha }}\"}" > public/version.json
+  #     - name: Generate version.json
+  #       run: |
+  #         echo "{\"version\": \"${{ github.sha }}\"}" > public/version.json
 
-      - name: Build for test
-        run: docker build --platform linux/arm64 -t triply-ui:${{ github.sha }} . && docker save triply-ui:${{ github.sha }} > triply-ui:${{ github.sha }}.tar
+  #     - name: Build for test
+  #       run: docker build --platform linux/arm64 -t triply-ui:${{ github.sha }} . && docker save triply-ui:${{ github.sha }} > triply-ui:${{ github.sha }}.tar
 
-      - uses: actions/upload-artifact@v4
-        with:
-          name: artifact
-          path: triply-ui:${{ github.sha }}.tar
-          retention-days: 1
-          if-no-files-found: error
-          include-hidden-files: true
+  #     - uses: actions/upload-artifact@v4
+  #       with:
+  #         name: artifact
+  #         path: triply-ui:${{ github.sha }}.tar
+  #         retention-days: 1
+  #         if-no-files-found: error
+  #         include-hidden-files: true
 
   deploy-to-azure:
     name: Deploy Image to ACR
