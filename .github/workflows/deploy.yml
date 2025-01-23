@@ -14,9 +14,7 @@ jobs:
   build-project:
     name: Build Application
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: ./triply-app
+
     steps:
       - uses: actions/checkout@v4
         with:
@@ -55,6 +53,7 @@ jobs:
           path: .next
           retention-days: 1
           if-no-files-found: error
+          include-hidden-files: true 
 
   build-image:
     name: Build image
