@@ -34,10 +34,10 @@ jobs:
       - name: Build for test
         run: docker build --platform linux/arm64 -t triply-ui:${{ github.sha }} . && docker save triply-ui:${{ github.sha }} > triply-ui:${{ github.sha }}.tar
 
-      uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v4
         with:
           name: artifact
-          path: triply-ui:${{ github.sha }}.tar 
+          path: triply-ui:${{ github.sha }}.tar
           retention-days: 1
           if-no-files-found: error
           include-hidden-files: true
