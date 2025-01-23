@@ -14,6 +14,9 @@ jobs:
   build-project:
     name: Build Application
     runs-on: ubuntu-latest
+    defaults:
+      run:
+      working-directory: ./triply-app
     steps:
       - uses: actions/checkout@v4
         with:
@@ -42,7 +45,7 @@ jobs:
         run: rm -rf .next && pnpm run build
 
       - name: Test Print
-        run: ls -al
+        run: pwd
 
       - name: 'Upload Artifact'
         if: github.ref == 'refs/heads/main'
@@ -51,6 +54,7 @@ jobs:
           name: artifact
           path: .next
           retention-days: 1
+          if-no-files-found: error
 
   build-image:
     name: Build image
