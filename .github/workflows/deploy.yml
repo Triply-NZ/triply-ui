@@ -16,7 +16,7 @@ jobs:
     runs-on: ubuntu-latest
     defaults:
       run:
-      working-directory: ./triply-app
+        working-directory: ./triply-app
     steps:
       - uses: actions/checkout@v4
         with:
