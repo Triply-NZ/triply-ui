@@ -55,7 +55,7 @@ jobs:
         run: docker push triply.azurecr.io/triply-ui:${{ github.sha }}
 
   deploy-to-azure:
-    name: Deploy ACR image
+    name: Deploy Image to ACR
     needs: build
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/main'
