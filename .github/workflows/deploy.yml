@@ -20,12 +20,27 @@ jobs:
         with:
           fetch-depth: 0
 
+      - name: Echo github.sha
+        run: |
+          echo ${{ github.sha }}
+
       - name: Generate version.json
         run: |
           echo "{\"version\": \"${{ github.sha }}\"}" > public/version.json
 
       - name: Build App
-        run: docker buildx build --platform linux/amd64,linux/arm64 -t triply.azurecr.io/triply-ui:${{ github.sha }} .
+        run: docker build --platform linux/amd64 -t triply.azurecr.io/triply-ui:${{ github.sha }} .
+
+      - name: Build for test
+        run: docker build --platform linux/arm64 -t triply-ui:${{ github.sha }} . && docker save triply-ui:${{ github.sha }} > triply-ui:${{ github.sha }}.tar
+
+      uses: actions/upload-artifact@v4
+        with:
+          name: artifact
+          path: triply-ui:${{ github.sha }}.tar 
+          retention-days: 1
+          if-no-files-found: error
+          include-hidden-files: true
 
       - name: Login to Azure Container Registry
         if: github.ref == 'refs/heads/main'
