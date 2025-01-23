@@ -47,7 +47,9 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: artifact
-          path: .next
+          path: | 
+            .next
+            Dockerfile
           retention-days: 1
           if-no-files-found: error
           include-hidden-files: true
@@ -61,9 +63,7 @@ jobs:
       - name: Download a single artifact
         uses: actions/download-artifact@v4
         with:
-          name: |
-            artifact
-            Dockerfile
+          name: artifact
 
       - uses: azure/docker-login@v1
         with:
