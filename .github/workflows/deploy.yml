@@ -20,60 +20,23 @@ jobs:
         with:
           fetch-depth: 0
 
-      - uses: pnpm/action-setup@v4
-        name: Install pnpm
-        with:
-          version: 10
-          run_install: false
-
-      - name: Install Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: 22
-          cache: 'pnpm'
-
       - name: Generate version.json
         run: |
           echo "{\"version\": \"${{ github.sha }}\"}" > public/version.json
 
-      - name: Install dependencies
-        run: pnpm i --frozen-lockfile
-
       - name: Build App
-        run: rm -rf .next && pnpm run build
+        run: docker buildx build --platform linux/amd64,linux/arm64 -t triply.azurecr.io/triply-ui:${{ github.sha }} .
 
-      - name: 'Upload Artifact'
+      - name: Login to Azure Container Registry
         if: github.ref == 'refs/heads/main'
-        uses: actions/upload-artifact@v4
-        with:
-          name: artifact
-          path: | 
-            .next
-            Dockerfile
-          retention-days: 1
-          if-no-files-found: error
-          include-hidden-files: true
-
-  build-image:
-    name: Build image
-    needs: build-project
-    runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/main'
-    steps:
-      - name: Download a single artifact
-        uses: actions/download-artifact@v4
-        with:
-          name: artifact
-
-      - uses: azure/docker-login@v1
+        uses: azure/docker-login@v1
         with:
           login-server: ${{ vars.ACR_NAME }}
           username: ${{ vars.ACR_TOKEN_USERNAME }}
           password: ${{ secrets.ACR_SECRET }}
 
-      - name: Build image
-        run: docker build --platform linux/amd64 -t triply.azurecr.io/triply-ui:${{ github.sha }} .
       - name: Push image
+        if: github.ref == 'refs/heads/main'
         run: docker push triply.azurecr.io/triply-ui:${{ github.sha }}
 
   deploy-to-azure:
